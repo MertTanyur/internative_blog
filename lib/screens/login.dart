@@ -10,8 +10,10 @@ import '../state/user_controller.dart';
 import 'package:hive/hive.dart';
 import '../local_storage/storage.dart';
 import '../widgets/blog_app_bar.dart';
+import 'login.dart';
 import 'main_screen.dart';
 import '../widgets/cred_input.dart';
+import '../widget_generating_functions/widget_generator_functions.dart';
 
 class Login extends StatefulWidget {
   static String id = 'login';
@@ -96,50 +98,52 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.all(15),
                   child: ElevatedButton(
                     onPressed: () async {
-                      var user = context.read<UserController>();
-                      user.newUser(User(
-                        mail: _mailController.text,
-                        password: _passwordController.text,
-                      ));
-                      Map response =
-                          await context.read<AuthController>().signIn();
-                      late String contentMessage;
-                      bool redirect = false;
-                      if (!response['HasError']) {
-                        contentMessage = 'Logged in successfully';
-                        redirect = true;
-                      } else if (response.containsKey('error')) {
-                        contentMessage = 'Local Error\n ${response["error"]}';
+                      if (_mailController.text != '' &&
+                          _passwordController.text != '') {
+                        var user = context.read<UserController>();
+                        user.newUser(
+                          User(
+                            mail: _mailController.text,
+                            password: _passwordController.text,
+                          ),
+                        );
+                        Map response =
+                            await context.read<AuthController>().signIn();
+                        late String contentMessage;
+                        bool redirect = false;
+                        if (!response['HasError']) {
+                          contentMessage = 'Logged in Successfully';
+                          redirect = true;
+                        } else if (response.containsKey('error')) {
+                          contentMessage = 'Local Error\n ${response["error"]}';
+                        } else {
+                          contentMessage = response['Message'];
+                          if (response.containsKey('ValidationErrors')) {
+                            if (response['ValidationErrors'].length != 0) {
+                              for (Map validationErrorMap
+                                  in response['ValidationErrors']) {
+                                contentMessage +=
+                                    '\n' + validationErrorMap['Value'];
+                              }
+                            }
+
+                            // contentMessage +=
+                            //     '\n' + response['ValidationErrors'].map((val)=>val.value);
+                          }
+                        }
+                        showSignError(context, 'Login Status:', contentMessage);
+                        // clearRegistrationInputs();
+                        FocusScope.of(context).unfocus();
+
+                        if (redirect) {
+                          Future.delayed(
+                              const Duration(milliseconds: 1300),
+                              () =>
+                                  Navigator.pushNamed(context, MainScreen.id));
+                        }
                       } else {
-                        contentMessage = response['Message'];
-                      }
-                      showDialog(
-                          context: context,
-                          builder: (context) => BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                                child: AlertDialog(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)),
-                                  backgroundColor: Theme.of(context)
-                                      .colorScheme
-                                      .secondary
-                                      .withOpacity(0.8),
-                                  actionsAlignment: MainAxisAlignment.center,
-                                  title: const Text('Registration status:'),
-                                  content: Text(contentMessage),
-                                  actions: [
-                                    TextButton(
-                                      child: const Text('Ok'),
-                                      onPressed: () {
-                                        Navigator.pop(context, 'Ok');
-                                      },
-                                    )
-                                  ],
-                                ),
-                              ));
-                      if (redirect) {
-                        Future.delayed(const Duration(milliseconds: 1300),
-                            () => Navigator.pushNamed(context, MainScreen.id));
+                        showSignError(context, 'Login Status:',
+                            'Please fill email and password inputs');
                       }
                     },
                     child: Row(
@@ -196,5 +200,12 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  void clearRegistrationInputs() {
+    return setState(() {
+      _mailController.clear();
+      _passwordController.clear();
+    });
   }
 }

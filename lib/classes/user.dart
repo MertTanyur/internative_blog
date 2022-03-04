@@ -9,7 +9,10 @@ class User {
 
   String? passwordRetry;
 
-  Map get signInCred => {'Email': mail, 'Password': password};
-  Map get signUpCred =>
-      {'Email': mail, 'Password': password, 'PasswordRetry': passwordRetry};
+  Map get signInCred => {'Email': mail?.trim(), 'Password': password?.trim()};
+  Map get signUpCred => {
+        'Email': mail?.trim(),
+        'Password': password?.trim(),
+        'PasswordRetry': passwordRetry?.trim()
+      };
 }

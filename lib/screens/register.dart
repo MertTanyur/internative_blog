@@ -12,6 +12,7 @@ import '../widgets/blog_app_bar.dart';
 import 'login.dart';
 import 'main_screen.dart';
 import '../widgets/cred_input.dart';
+import '../widget_generating_functions/widget_generator_functions.dart';
 
 class Register extends StatefulWidget {
   static String id = 'register';
@@ -124,40 +125,23 @@ class _RegisterState extends State<Register> {
                         } else {
                           contentMessage = response['Message'];
                           if (response.containsKey('ValidationErrors')) {
-                            for (Map validationErrorMap
-                                in response['ValidationErrors']) {
-                              contentMessage +=
-                                  '\n' + validationErrorMap['Value'];
+                            if (response['ValidationErrors'].length != 0) {
+                              for (Map validationErrorMap
+                                  in response['ValidationErrors']) {
+                                contentMessage +=
+                                    '\n' + validationErrorMap['Value'];
+                              }
                             }
+
                             // contentMessage +=
                             //     '\n' + response['ValidationErrors'].map((val)=>val.value);
                           }
                         }
-                        showDialog(
-                          context: context,
-                          builder: (context) => BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                            child: AlertDialog(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              backgroundColor: Theme.of(context)
-                                  .colorScheme
-                                  .secondary
-                                  .withOpacity(0.8),
-                              actionsAlignment: MainAxisAlignment.center,
-                              title: const Text('Registration status:'),
-                              content: Text(contentMessage),
-                              actions: [
-                                TextButton(
-                                  child: const Text('Ok'),
-                                  onPressed: () {
-                                    Navigator.pop(context, 'Ok');
-                                  },
-                                )
-                              ],
-                            ),
-                          ),
-                        );
+                        showSignError(
+                            context, 'Registration Status:', contentMessage);
+                        clearRegistrationInputs();
+                        FocusScope.of(context).unfocus();
+
                         if (redirect) {
                           Future.delayed(
                               const Duration(milliseconds: 1300),
@@ -165,32 +149,8 @@ class _RegisterState extends State<Register> {
                                   Navigator.pushNamed(context, MainScreen.id));
                         }
                       } else {
-                        showDialog(
-                          context: context,
-                          builder: (context) => BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                            child: AlertDialog(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              backgroundColor: Theme.of(context)
-                                  .colorScheme
-                                  .secondary
-                                  .withOpacity(0.8),
-                              actionsAlignment: MainAxisAlignment.center,
-                              title: const Text('Registration status:'),
-                              content: const Text(
-                                  'please fill email and password inputs'),
-                              actions: [
-                                TextButton(
-                                  child: const Text('Ok'),
-                                  onPressed: () {
-                                    Navigator.pop(context, 'Ok');
-                                  },
-                                )
-                              ],
-                            ),
-                          ),
-                        );
+                        showSignError(context, 'Registration Status:',
+                            'Please fill email and password inputs');
                       }
                     },
                     child: Row(
@@ -247,5 +207,13 @@ class _RegisterState extends State<Register> {
         ),
       ),
     );
+  }
+
+  void clearRegistrationInputs() {
+    return setState(() {
+      _mailController.clear();
+      _passwordController.clear();
+      _rePasswordController.clear();
+    });
   }
 }

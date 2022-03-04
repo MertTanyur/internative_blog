@@ -25,7 +25,10 @@ class AuthController extends ChangeNotifier {
   Future<Map> signIn() async {
     Map response = {};
     try {
+      print('sign in function is trigerred from auth controller');
+      print(userController!.user!.signInCred);
       response = await authService.signIn(userController!.user!.signInCred);
+      print('response is -> $response from try');
       if (!response['HasError']) {
         bearerToken = response['Data']['Token'];
         authSuccessful();

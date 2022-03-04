@@ -17,16 +17,32 @@ class AuthService {
   // }
   Future<Map> signIn(Map signInCred) async {
     Map result;
-    http.Response response = await http
-        .post(Uri.parse(api_endpoint + 'Login/SignIn'), body: signInCred);
-    if (response.statusCode == 200) {
-      result = jsonDecode(response.body);
-    } else {
+    print('main parameter is -> $signInCred');
+    print(jsonEncode(signInCred));
+    try {
+      http.Response response = await http.post(
+        Uri.parse(api_endpoint + 'Login/SignIn'),
+        body: jsonEncode(signInCred),
+        headers: {"Content-Type": "application/json"},
+      );
+      print('main response is -> ${jsonDecode(response.body)})');
+      if (response.statusCode == 200) {
+        result = jsonDecode(response.body);
+      } else {
+        result = {
+          'HasError': true,
+          'error': response.statusCode,
+        };
+        // throw Exception('Failed to sign in');
+      }
+    } catch (e) {
       result = {
-        'error': response.statusCode,
+        'HasError': true,
+        'error': 'local error',
       };
-      throw Exception('Failed to sign in');
+      print(e);
     }
+
     return result;
   }
 
