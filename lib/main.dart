@@ -1,7 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:internative_blog/local_storage/storage.dart';
+import 'package:provider/provider.dart';
+import 'state/auth_controller.dart';
+import 'state/user_controller.dart';
+import 'screens/register.dart';
+import 'screens/login.dart';
+// import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'local_storage/storage.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'screens/main_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  // storage service
+  await Hive.initFlutter();
+  Hive.registerAdapter(CredentialsAdapter());
+  Hive.openBox<Credentials>('credentials');
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserController(),
+        ),
+        ChangeNotifierProxyProvider<UserController, AuthController>(
+          update: (context, userController, authController) =>
+              authController!..updateUserController(userController),
+          create: (context) =>
+              AuthController(userController: context.read<UserController>()),
+        )
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,7 +42,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      themeMode: ThemeMode.dark,
       theme: ThemeData(
+        textTheme: GoogleFonts.robotoTextTheme(
+          Theme.of(context)
+              .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+        ),
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -22,9 +57,50 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
+        useMaterial3: true,
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      darkTheme: ThemeData(
+          // scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: const Color(0xffFAFAFA),
+          textTheme: GoogleFonts.robotoTextTheme(
+            Theme.of(context)
+                .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+          ),
+          // inputDecorationTheme: InputDecorationTheme(labelStyle: TextStyle(color: )),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ),
+          ),
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ),
+          ),
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xff292F3B),
+            primary: const Color(0xff292F3B),
+            secondary: const Color(0xffC4C9D2),
+            // secondary:
+          )),
+      initialRoute: Register.id,
+      routes: {
+        Register.id: (_) => const Register(),
+        Login.id: (_) => const Login(),
+        MainScreen.id: (_) => const MainScreen(),
+      },
     );
   }
 }

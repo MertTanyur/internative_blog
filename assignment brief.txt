@@ -1,0 +1,50 @@
+Merhabalar,
+ 
+Ekte gönderdiğimiz adobe xd tasarımında görüldüğü üzere uygulamanızda 6 ekran olmalıdır.
+ 
+http://test20.internative.net/swagger/ veya http://test020.internative.net/swagger/
+adresinden kullanacağınız API endpointlerine ulaşabilirsiniz. 2 internet bağlantımız olduğu için linklerden biri çalışmaz ise diğerini kullanabilirsiniz
+ 
+(Kayıt ve Giriş Sayfaları) 
+ 
+Sayfaların tasarıma uygun bir arayüz ile beraber apiden dönen verilerle uyumlu bir şekilde çalışmasını gerekmektedir. Örneğin dönen hata mesajlarının ekranda gösterilmesi gibi.
+ 
+Yapılan register veya login işlemlerinde oturumun kalıcı olması sağlanmalıdır. Ardından kullanıcı anasayfaya yönlendirilmelidir.
+ 
+(Profil Sayfası)
+ 
+Profil sayfasında galeriden veya kameradan fotoğraf eklenebilmesi gerekmektedir.
+Fotoğraf seçme işleminde alttan açılan modal kapanmadan resim modal'a yansıtılmalıdır.
+ 
+Profil fotoğrafı seçildinde seçilen fotoğraf apideki General/UploadImage endpointine gönderilmeli ve
+buradan dönecek olan url profil sayfasında bulunan kaydet butonuna basıldığında lokasyon verisi ile beraber Account/Update endpointine gönderilmelidir.
+ 
+Bu kısımda bulunan map te ise kullanıcının konumu gösterilmelidir. Kullanıcı isterse sürükleme yaparak konumu güncelleyebilmelidir.
+ 
+Yine bu kısımda hesaptan çıkış yapabilecek ve çıkış yapar ise kullanıcı login ekranına yönlendirilecektir.
+ 
+(Anasayfa)
+ 
+Apiden gelen kategoriler tasarımda beklendiği gibi ekrana basılmalı ve her kategori seçildiğinde ilgili bloglar arayüze uygun bir şekilde ekrana getirilmelidir. 
+blog verilerini alırken CategoryId verilmez ise tüm bloglar gelmektedir.
+Gelen bloglar favorilere eklendiği zaman anlık olarak bottom bar daki beğeniler iconunun üzerinde favori blog sayısı değişmelidir.
+ 
+Kullanıcının konum bilgisi boş ise cihazın konumu alınıp apiye gönderilmelidir ve profil kısmındaki mapte işaretlenmelidir.
+ 
+(Favoriler Sayfası)
+ 
+Favoriler ekranında favoriye eklenen bloglar gösterilecektir. Yine kalp butonu ile favorilerden çıkarılabilecektir.
+ 
+(Blog Detay Sayfası)
+ 
+Tıklanan herhangi bir bloğun detay sayfası apiden gelen verilerle ve sizin oluşturacağınız tasarım görüşüne bırakılmıştır 
+blog detayı için api den dönen blog verisinde "Content" alanı html veri dönmektedir ve render edilmiş şekilde ekranda gösterilmelidir.
+ve yine sağ üst köşeden favori işlemlerinin yapılması beklenmektedir.
+ 
+Yapabildiğiniz kadarını veya tamamını 6 mart pazar gününe kadar bize göndermeniz gerekmektedir.
+ 
+(Mobx,Provider gibi harici durum yönetimlerinin kullanılması beklenmektedir. Yapılacak her ekstra özellik artı puan olarak değerlendirilecektir.)
+ 
+herhangi bir sorunuz olursa bana ulaşabilirsiniz.
+ 
+ 
