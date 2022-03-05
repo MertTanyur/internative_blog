@@ -67,10 +67,10 @@ class AuthController extends ChangeNotifier {
     saveCredsToStorage();
   }
 
-  void logOut() {
-    _isLoggedIn = false;
-    _logInStreamController.sink.add(_isLoggedIn);
-  }
+  // void logOut() {
+  //   _isLoggedIn = false;
+  //   _logInStreamController.sink.add(_isLoggedIn);
+  // }
 
   Future<void> checkAuthentication() async {
     //
@@ -83,9 +83,20 @@ class AuthController extends ChangeNotifier {
   // local storage functions
   void saveCredsToStorage() {
     var box = Hive.box<Credentials>('credentials');
-    box.add(Credentials(
-        token: bearerToken,
-        mail: userController!.user!.mail,
-        password: userController!.user!.password));
+    box.put(
+        0,
+        Credentials(
+            token: bearerToken,
+            mail: userController!.user!.mail,
+            password: userController!.user!.password));
+  }
+
+  void logOut() {
+    removeCredsFromStorage();
+  }
+
+  void removeCredsFromStorage() {
+    var box = Hive.box<Credentials>('credentials');
+    box.clear();
   }
 }

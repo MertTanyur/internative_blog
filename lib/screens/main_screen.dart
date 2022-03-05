@@ -21,13 +21,27 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final List<Widget> _widgetOptions = const [
-    Text(
+  final List<Widget> _widgetOptions = [
+    const Text(
       'screen1',
       key: ValueKey(0),
     ),
-    Blogs(),
-    Text('screen3', key: ValueKey(3)),
+    const Blogs(),
+    TextButton(
+      child: Text(
+        'Log out',
+        style: TextStyle(fontSize: 30),
+      ),
+      key: const ValueKey(3),
+      onPressed: () async {
+        Box<Credentials> credBox = Hive.box<Credentials>('credentials');
+        print('before ->>');
+        print(credBox.values);
+        await credBox.clear();
+        print('after ->>');
+        print(credBox.values);
+      },
+    ),
   ];
   final List<Text> _appBarHeaders = const [
     Text(

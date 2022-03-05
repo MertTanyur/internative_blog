@@ -13,13 +13,25 @@ import 'package:google_fonts/google_fonts.dart';
 import 'screens/main_screen.dart';
 import 'state/nav_bar_controller.dart';
 
+bool reDirectToMainPage = false;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // storage service
   await Hive.initFlutter();
   Hive.registerAdapter(CredentialsAdapter());
-  Hive.openBox<Credentials>('credentials');
+
+  var credsBox = await Hive.openBox<Credentials>('credentials');
+  try {
+    Credentials? creds = credsBox.get(0);
+    if (creds?.token != null) {
+      reDirectToMainPage = true;
+    }
+  } catch (e) {
+    print(e);
+  }
+
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.immersiveSticky,
   ).then((_) => runApp(
@@ -42,8 +54,9 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  const MyApp({
+    Key? key,
+  }) : super(key: key);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -112,7 +125,7 @@ class MyApp extends StatelessWidget {
             secondary: const Color(0xffC4C9D2),
             // secondary:
           )),
-      initialRoute: MainScreen.id,
+      initialRoute: reDirectToMainPage ? MainScreen.id : Register.id,
       routes: {
         Register.id: (_) => const Register(),
         Login.id: (_) => const Login(),
