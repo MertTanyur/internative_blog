@@ -45,10 +45,17 @@ class _CustomNavBarState extends State<CustomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        border: Border(
-          top: BorderSide(color: Color(0xff707070), width: 0.5),
-        ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+              color: const Color(0xff000000).withOpacity(0.2),
+              spreadRadius: 0.5,
+              blurRadius: 8)
+        ],
+        // border: const Border(
+        //   top: BorderSide(color: Color(0xff707070), width: 0.5),
+        // ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),

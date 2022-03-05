@@ -8,6 +8,9 @@ import '../local_storage/storage.dart';
 import '../widgets/blog_nav_bar.dart';
 import '../state/nav_bar_controller.dart';
 import 'package:provider/provider.dart';
+import '../views/blogs.dart';
+import '../views/favorites.dart';
+import '../views/profile.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -23,7 +26,7 @@ class _MainScreenState extends State<MainScreen> {
       'screen1',
       key: ValueKey(0),
     ),
-    Text('screen2', key: ValueKey(2)),
+    Blogs(),
     Text('screen3', key: ValueKey(3)),
   ];
   final List<String> _appBarHeaders = const [
@@ -40,32 +43,36 @@ class _MainScreenState extends State<MainScreen> {
         builder: ((context, navBarController, _) => Scaffold(
               body: SizedBox(
                 height: size.height,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AnimatedSwitcher(
-                        duration: const Duration(seconds: 1),
-                        child: BlogAppBar(
-                            key: ValueKey(navBarController.currentIndex),
-                            title:
-                                _appBarHeaders[navBarController.currentIndex],
-                            size: size),
-                      ),
-                      AnimatedSwitcher(
-                        duration: const Duration(seconds: 1),
-                        child: _widgetOptions[navBarController.currentIndex],
-                      ),
+                child: Column(
+                  children: [
+                    AnimatedSwitcher(
+                      duration: const Duration(seconds: 1),
+                      child: BlogAppBar(
+                          key: ValueKey(navBarController.currentIndex),
+                          title: _appBarHeaders[navBarController.currentIndex],
+                          size: size),
+                    ),
+                    // Container(
+                    //   height: size.height / 2,
+                    //   child: AnimatedSwitcher(
+                    //     duration: const Duration(seconds: 1),
+                    //     child: _widgetOptions[navBarController.currentIndex],
+                    //   ),
+                    // ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                          physics: ScrollPhysics(),
+                          child: _widgetOptions[navBarController.currentIndex]),
+                    ),
 
-                      // Text('welcome to main screen'),
-                      // TextButton(
-                      //   child: Text('print local storage'),
-                      //   onPressed: () => print(
-                      //     'local storage-> ${Hive.box<Credentials>('credentials').values.map((e) => e.creds).toList()}',
-                      //   ),
-                      // ),
-                    ],
-                  ),
+                    // Text('welcome to main screen'),
+                    // TextButton(
+                    //   child: Text('print local storage'),
+                    //   onPressed: () => print(
+                    //     'local storage-> ${Hive.box<Credentials>('credentials').values.map((e) => e.creds).toList()}',
+                    //   ),
+                    // ),
+                  ],
                 ),
               ),
               bottomNavigationBar: CustomNavBar(size: size),
