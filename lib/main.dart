@@ -69,6 +69,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       darkTheme: ThemeData(
+          appBarTheme: AppBarTheme(
+            backgroundColor: Color(0xffffffff),
+            centerTitle: true,
+            titleTextStyle: Theme.of(context)
+                .textTheme
+                .headline6!
+                .copyWith(color: const Color(0xff292F3B)),
+            shadowColor: const Color(0xff000000).withOpacity(0.3),
+          ),
           // scaffoldBackgroundColor: Colors.white,
           scaffoldBackgroundColor: const Color(0xffFAFAFA),
           textTheme: GoogleFonts.robotoTextTheme(

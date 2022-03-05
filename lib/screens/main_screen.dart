@@ -29,11 +29,21 @@ class _MainScreenState extends State<MainScreen> {
     Blogs(),
     Text('screen3', key: ValueKey(3)),
   ];
-  final List<String> _appBarHeaders = const [
-    'My Favorites',
-    'Home',
-    'My Profile',
-    'Article Detail',
+  final List<Text> _appBarHeaders = const [
+    Text(
+      'My Favorites',
+      key: ValueKey(0),
+    ),
+    Text(
+      'Home',
+      key: ValueKey(1),
+    ),
+    Text(
+      'My Profile',
+      key: ValueKey(2),
+    ),
+
+    // 'Article Detail',
   ];
 
   @override
@@ -41,74 +51,15 @@ class _MainScreenState extends State<MainScreen> {
     Size size = MediaQuery.of(context).size;
     return Consumer<NavBarController>(
         builder: ((context, navBarController, _) => Scaffold(
-              body: SizedBox(
-                height: size.height,
-                child: Column(
-                  children: [
-                    AnimatedSwitcher(
-                      duration: const Duration(seconds: 1),
-                      child: BlogAppBar(
-                          key: ValueKey(navBarController.currentIndex),
-                          title: _appBarHeaders[navBarController.currentIndex],
-                          size: size),
-                    ),
-                    // Container(
-                    //   height: size.height / 2,
-                    //   child: AnimatedSwitcher(
-                    //     duration: const Duration(seconds: 1),
-                    //     child: _widgetOptions[navBarController.currentIndex],
-                    //   ),
-                    // ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                          physics: ScrollPhysics(),
-                          child: _widgetOptions[navBarController.currentIndex]),
-                    ),
-
-                    // Text('welcome to main screen'),
-                    // TextButton(
-                    //   child: Text('print local storage'),
-                    //   onPressed: () => print(
-                    //     'local storage-> ${Hive.box<Credentials>('credentials').values.map((e) => e.creds).toList()}',
-                    //   ),
-                    // ),
-                  ],
-                ),
-              ),
+              appBar: AppBar(
+                  title: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 800),
+                child: _appBarHeaders[navBarController.currentIndex],
+              )),
+              body: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 600),
+                  child: _widgetOptions[navBarController.currentIndex]),
               bottomNavigationBar: CustomNavBar(size: size),
-
-              //  BottomNavigationBar(
-              //   iconSize: 32,
-              //   showSelectedLabels: false,
-              //   showUnselectedLabels: false,
-              //   landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
-              //   items: const [
-              //     BottomNavigationBarItem(
-              //       label: 'Favorites',
-              //       icon: Icon(Icons.favorite),
-              //     ),
-              //     BottomNavigationBarItem(
-              //       label: 'Blogs',
-              //       icon: Icon(Icons.home),
-              //     ),
-              //     BottomNavigationBarItem(
-              //       label: 'Account',
-              //       icon: Icon(Icons.person),
-              //     )
-              //   ],
-              //   currentIndex: _selectedIndex,
-              //   //       final List<String> _appBarHeaders = const [
-              //   //   'Home',
-              //   //   'My Favorites',
-              //   //   'My Profile',
-              //   //   'Article Detail',
-              //   // ];
-              //   onTap: (val) {
-              //     setState(() {
-              //       _selectedIndex = val;
-              //     });
-              //   },
-              // ),
             )));
   }
 }

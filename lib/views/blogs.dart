@@ -12,28 +12,87 @@ class _BlogsState extends State<Blogs> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return
-        // Column(
-        //   children: [BlogItem(size: size)],
+        // Expanded(
+        //   child: ListView(
+        //     children: [
+        //       Row(children: [Text('1')]),
+        //       GridView.count(
+        //         crossAxisCount: 2,
+        //         children: [
+        //           BlogItem(size: size),
+        //         ],
+        //       ),
+        //     ],
+        //   ),
         // );
-        GridView.count(
-      childAspectRatio: 0.8,
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
-      padding: EdgeInsets.all(10),
-      shrinkWrap: true,
-      crossAxisCount: 2,
-      children: [
-        BlogItem(size: size),
-        BlogItem(size: size),
-        BlogItem(size: size),
-        BlogItem(size: size),
-        BlogItem(size: size),
-        BlogItem(size: size),
-        BlogItem(size: size),
-        BlogItem(size: size),
-        BlogItem(size: size),
-      ],
+
+        SizedBox(
+      width: size.width,
+      child: SingleChildScrollView(
+          child: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Wrap(
+          // crossAxisAlignment: WrapCrossAlignment.end,
+          runAlignment: WrapAlignment.center,
+          alignment: WrapAlignment.center,
+          spacing: 10,
+          runSpacing: 10,
+          children: [
+            Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                height: size.height * 1.1 / 8,
+                width: size.width,
+                child: ListView(
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    CategoryItem(
+                      title: 'Category Tag - 1 ',
+                      size: size,
+                      imageUrl:
+                          'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
+                    ),
+                    CategoryItem(
+                      title: 'Category Tag - 1 ',
+                      size: size,
+                      imageUrl:
+                          'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
+                    ),
+                    CategoryItem(
+                      title: 'Category Tag - 1 ',
+                      size: size,
+                      imageUrl:
+                          'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
+                    ),
+                    CategoryItem(
+                      title: 'Category Tag - 1 ',
+                      size: size,
+                      imageUrl:
+                          'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
+                    ),
+                  ],
+                )),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    'Blog',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                )
+              ],
+            ),
+            BlogItem(size: size),
+            BlogItem(size: size),
+            BlogItem(size: size),
+            BlogItem(size: size),
+            BlogItem(size: size),
+          ],
+        ),
+      )),
     );
+
     // SingleChildScrollView(
     //   child: Column(
     //     children: [
@@ -48,6 +107,41 @@ class _BlogsState extends State<Blogs> {
   }
 }
 
+class CategoryItem extends StatelessWidget {
+  CategoryItem({
+    Key? key,
+    required this.size,
+    required this.imageUrl,
+    required this.title,
+  }) : super(key: key);
+
+  final Size size;
+  String imageUrl;
+  String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      width: size.width * 11 / 39,
+      child: Column(
+        children: [
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.network(
+                imageUrl,
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+          Text(title, style: TextStyle(fontSize: 10))
+        ],
+      ),
+    );
+  }
+}
+
 class BlogItem extends StatelessWidget {
   const BlogItem({
     Key? key,
@@ -59,6 +153,7 @@ class BlogItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(5),
       height: size.height * 24 / 84,
       width: size.width * 18 / 39,
       decoration: BoxDecoration(
