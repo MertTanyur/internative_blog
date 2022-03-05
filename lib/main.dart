@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:internative_blog/local_storage/storage.dart';
 import 'package:provider/provider.dart';
 import 'state/auth_controller.dart';
@@ -10,28 +11,34 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'local_storage/storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/main_screen.dart';
+import 'state/nav_bar_controller.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   // storage service
   await Hive.initFlutter();
   Hive.registerAdapter(CredentialsAdapter());
   Hive.openBox<Credentials>('credentials');
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => UserController(),
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.immersiveSticky,
+  ).then((_) => runApp(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (context) => UserController(),
+            ),
+            ChangeNotifierProxyProvider<UserController, AuthController>(
+              update: (context, userController, authController) =>
+                  authController!..updateUserController(userController),
+              create: (context) => AuthController(
+                  userController: context.read<UserController>()),
+            ),
+            ChangeNotifierProvider(create: (context) => NavBarController()),
+          ],
+          child: const MyApp(),
         ),
-        ChangeNotifierProxyProvider<UserController, AuthController>(
-          update: (context, userController, authController) =>
-              authController!..updateUserController(userController),
-          create: (context) =>
-              AuthController(userController: context.read<UserController>()),
-        )
-      ],
-      child: const MyApp(),
-    ),
-  );
+      ));
 }
 
 class MyApp extends StatelessWidget {
@@ -41,6 +48,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       themeMode: ThemeMode.dark,
       theme: ThemeData(
@@ -95,7 +103,7 @@ class MyApp extends StatelessWidget {
             secondary: const Color(0xffC4C9D2),
             // secondary:
           )),
-      initialRoute: Register.id,
+      initialRoute: MainScreen.id,
       routes: {
         Register.id: (_) => const Register(),
         Login.id: (_) => const Login(),

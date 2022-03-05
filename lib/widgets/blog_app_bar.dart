@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class BlogAppBar extends StatelessWidget {
+class BlogAppBar extends StatefulWidget {
   const BlogAppBar({
     Key? key,
     required this.title,
@@ -10,10 +10,17 @@ class BlogAppBar extends StatelessWidget {
   final Size size;
 
   @override
+  State<BlogAppBar> createState() => _BlogAppBarState();
+}
+
+class _BlogAppBarState extends State<BlogAppBar> {
+  CrossFadeState crossFadeState = CrossFadeState.showFirst;
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.bottomCenter,
-      height: size.height / 9,
+      height: widget.size.height / 13,
       decoration: BoxDecoration(
         color: const Color(0xffffffff),
         boxShadow: [
@@ -31,9 +38,9 @@ class BlogAppBar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12.0),
             child: Align(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.center,
               child: Text(
-                title,
+                widget.title,
                 style: Theme.of(context)
                     .textTheme
                     .headline6!
