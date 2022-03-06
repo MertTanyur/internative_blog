@@ -20,6 +20,7 @@ class _BlogsState extends State<Blogs> {
     });
   }
 
+  // int _selectedCategory = 0;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -44,30 +45,29 @@ class _BlogsState extends State<Blogs> {
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       children: [
-                        CategoryItem(
-                          title: 'Category Tag - 1 ',
-                          size: size,
-                          imageUrl:
-                              'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
-                        ),
-                        CategoryItem(
-                          title: 'Category Tag - 1 ',
-                          size: size,
-                          imageUrl:
-                              'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
-                        ),
-                        CategoryItem(
-                          title: 'Category Tag - 1 ',
-                          size: size,
-                          imageUrl:
-                              'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
-                        ),
-                        CategoryItem(
-                          title: 'Category Tag - 1 ',
-                          size: size,
-                          imageUrl:
-                              'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
-                        ),
+                        ...context
+                            .read<AccountController>()
+                            .categories!
+                            .asMap()
+                            .map((idx, categoryMap) => MapEntry(
+                                idx,
+                                InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        context
+                                            .read<AccountController>()
+                                            .setCategory(idx);
+                                      });
+                                      print('category is changed');
+                                      print('selected category is -> $idx');
+                                    },
+                                    child: CategoryItem(
+                                      imageUrl: categoryMap["Image"],
+                                      size: size,
+                                      title: categoryMap["Title"],
+                                    ))))
+                            .values
+                            .toList()
                       ],
                     ),
                   ),
@@ -84,36 +84,42 @@ class _BlogsState extends State<Blogs> {
                   ),
                   ...context
                       .read<AccountController>()
-                      .processedBlogs!['Kategori 1']!
+                      .processedBlogs![
+                          'Kategori ${accountController.selectedCategory + 1}']!
                       .map(
-                        (Map blogMap) => BlogItem(
-                            size: size,
-                            imageUrl: blogMap['Image'],
-                            title: blogMap['Title'].replaceAll('Kategori', ''),
-                            id: blogMap['Id']),
+                        (Map blogMap) => AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 1200),
+                          child: BlogItem(
+                              key: ValueKey(blogMap['Id']),
+                              size: size,
+                              imageUrl: blogMap['Image'],
+                              title:
+                                  blogMap['Title'].replaceAll('Kategori', ''),
+                              id: blogMap['Id']),
+                        ),
                       )
                       .toList(),
-                  BlogItem(
-                    id: '1',
-                    size: size,
-                    imageUrl:
-                        'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
-                    title: 'What is lorem ipsum',
-                  ),
-                  BlogItem(
-                    id: '2',
-                    size: size,
-                    imageUrl:
-                        'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
-                    title: 'What is lorem ipsum',
-                  ),
-                  BlogItem(
-                    id: '3',
-                    size: size,
-                    imageUrl:
-                        'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
-                    title: 'What is lorem ipsum',
-                  ),
+                  // BlogItem(
+                  //   id: '1',
+                  //   size: size,
+                  //   imageUrl:
+                  //       'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
+                  //   title: 'What is lorem ipsum',
+                  // ),
+                  // BlogItem(
+                  //   id: '2',
+                  //   size: size,
+                  //   imageUrl:
+                  //       'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
+                  //   title: 'What is lorem ipsum',
+                  // ),
+                  // BlogItem(
+                  //   id: '3',
+                  //   size: size,
+                  //   imageUrl:
+                  //       'https://img.imageus.dev/https://internative.s3.eu-central-1.amazonaws.com/uploads/blogPictures/5af6fd64-c970-4884-83f0-71cbf2ad96e1.jpg',
+                  //   title: 'What is lorem ipsum',
+                  // ),
                 ],
               )),
         ),

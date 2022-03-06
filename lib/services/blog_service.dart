@@ -15,7 +15,7 @@ class BlogService {
           "Authorization": "Bearer $token",
         },
       );
-      print('main response is -> ${jsonDecode(response.body)})');
+      // print('main response is -> ${jsonDecode(response.body)})');
       if (response.statusCode == 200) {
         result = jsonDecode(response.body);
       } else {
@@ -46,7 +46,7 @@ class BlogService {
           "Authorization": "Bearer $token",
         },
       );
-      print('main response is -> ${jsonDecode(response.body)})');
+      // print('main response is -> ${jsonDecode(response.body)})');
       if (response.statusCode == 200) {
         result = jsonDecode(response.body);
       } else {
@@ -63,7 +63,7 @@ class BlogService {
       };
       print(e);
     }
-
+    // print('service result is -> $result');
     return result;
   }
 
@@ -78,7 +78,7 @@ class BlogService {
           "Authorization": "Bearer $token",
         },
       );
-      print('main response is -> ${jsonDecode(response.body)})');
+      // print('main response is -> ${jsonDecode(response.body)})');
       if (response.statusCode == 200) {
         result = jsonDecode(response.body);
       } else {

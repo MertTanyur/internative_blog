@@ -20,7 +20,7 @@ class AccountService {
           "Authorization": "Bearer $token",
         },
       );
-      print('main response is -> ${jsonDecode(response.body)})');
+      // print('main response is -> ${jsonDecode(response.body)})');
       if (response.statusCode == 200) {
         result = jsonDecode(response.body);
       } else {
@@ -51,7 +51,7 @@ class AccountService {
           "Authorization": "Bearer $token",
         },
       );
-      print('main response is -> ${jsonDecode(response.body)})');
+      // print('main response is -> ${jsonDecode(response.body)})');
       if (response.statusCode == 200) {
         result = jsonDecode(response.body);
       } else {

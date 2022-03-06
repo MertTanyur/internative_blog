@@ -27,8 +27,18 @@ class AccountController extends ChangeNotifier {
   File? imageFile;
 
   Map? rawBlogs;
+  List? rawBlogList;
 
   Map<String, List<Map>>? processedBlogs;
+
+  int selectedCategory = 0;
+
+  void setCategory(int val) {
+    selectedCategory = val;
+    notifyListeners();
+  }
+
+  List? categories;
 
   Future<void> favBlog(String id) async {
     await toggleFavorite(id);
@@ -72,16 +82,13 @@ class AccountController extends ChangeNotifier {
 //   }
 // }
   Future<Map> accountGet() async {
-    print('get account method is triggerred watch close !');
     Map result = {};
     try {
       result = await accountService.accountGet(bearerToken!);
-      print('get account result -> $result');
       if (!result['HasError']) {
         var ids = result['Data']['FavoriteBlogIds'] as List;
 
         ids.forEach((element) => favoriteBlogs.add(element));
-        ids.forEach((element) => print(element));
       }
     } catch (e) {
       result['HasError'] = true;
@@ -130,6 +137,7 @@ class AccountController extends ChangeNotifier {
     try {
       result = await blogService.getBlogs(bearerToken!);
       rawBlogs = result;
+      rawBlogList = rawBlogs!['Data'];
       notifyListeners();
       parseBlogs();
     } catch (e) {
@@ -168,14 +176,19 @@ class AccountController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Map> getCategories() async {
+  Future<void> getCategories() async {
     Map result = {};
     try {
+      print('get categories function is trigerred watch close! ');
       result = await blogService.getCategories(bearerToken!);
+      categories = result['Data'];
+      print('result data -> ${result["Data"]}');
+      print('categories -> $categories');
+      notifyListeners();
     } catch (e) {
       result['HasError'] = true;
       result['error'] = e;
+      print(e);
     }
-    return result;
   }
 }

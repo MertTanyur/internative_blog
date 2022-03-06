@@ -13,9 +13,9 @@ class BlogItem extends StatefulWidget {
   }) : super(key: key);
   bool isFavorite = false;
   final Size size;
-  String imageUrl;
-  String title;
-  String id;
+  final String imageUrl;
+  final String title;
+  final String id;
 
   @override
   State<BlogItem> createState() => _BlogItemState();
@@ -26,7 +26,7 @@ class _BlogItemState extends State<BlogItem> with TickerProviderStateMixin {
   late AnimationController controller;
   @override
   void initState() {
-    print('widget is initialized');
+    // print('widget is initialized');
     controller = AnimationController(
         duration: const Duration(milliseconds: 800), vsync: this)
       ..addListener(() {
@@ -36,8 +36,8 @@ class _BlogItemState extends State<BlogItem> with TickerProviderStateMixin {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       widget.isFavorite =
           context.read<AccountController>().favoriteBlogs.contains(widget.id);
-      print(
-          'we are here inside addpostframecallback and widget value is -> ${widget.isFavorite}');
+      // print(
+      //     'we are here inside addpostframecallback and widget value is -> ${widget.isFavorite}');
       if (widget.isFavorite) controller.forward();
     });
     favAnimation =
@@ -46,8 +46,10 @@ class _BlogItemState extends State<BlogItem> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    super.dispose();
     controller.dispose();
+    if (mounted) {
+      super.dispose();
+    }
   }
 
   @override

@@ -40,8 +40,9 @@ class _SplashScreenState extends State<SplashScreen> {
         if (result != null) {
           if (result.containsKey('HasError') && !result['HasError']) {
             await context.read<AccountController>().accountGet();
-
-            Navigator.pushReplacementNamed(context, MainScreen.id);
+            await context.read<AccountController>().getCategories();
+            Future.delayed(Duration(seconds: 2),
+                () => Navigator.popAndPushNamed(context, MainScreen.id));
           } else {
             print(result['HasError']);
             if (result.containsKey('Message')) {

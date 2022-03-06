@@ -26,10 +26,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final List<Widget> _widgetOptions = [
-    const Text(
-      'screen1',
-      key: ValueKey(0),
-    ),
+    const Favorites(),
     const Blogs(),
     TextButton(
       child: Text(
