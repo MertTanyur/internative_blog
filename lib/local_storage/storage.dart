@@ -15,4 +15,5 @@ class Credentials extends User {
         'password': super.password,
         'token': token,
       };
+  User get oldUser => User.fromCredsMap(creds);
 }

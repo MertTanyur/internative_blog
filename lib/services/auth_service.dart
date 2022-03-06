@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
-import '../state/auth_controller.dart';
+
 import '../config.dart';
 
 class AuthService {
@@ -17,7 +16,7 @@ class AuthService {
   // }
   Future<Map> signIn(Map signInCred) async {
     Map result;
-    print('main parameter is -> $signInCred');
+    // print('main parameter is -> $signInCred');
     print(jsonEncode(signInCred));
     try {
       http.Response response = await http.post(
@@ -25,7 +24,7 @@ class AuthService {
         body: jsonEncode(signInCred),
         headers: {"Content-Type": "application/json"},
       );
-      print('main response is -> ${jsonDecode(response.body)})');
+      // print('main response is -> ${jsonDecode(response.body)})');
       if (response.statusCode == 200) {
         result = jsonDecode(response.body);
       } else {
@@ -48,17 +47,17 @@ class AuthService {
 
   Future<Map> signUp(Map signUpCred) async {
     Map result;
-    print('signUpCred is -> $signUpCred');
-    print('uri is -> ${api_endpoint + 'Login/SignUp'}');
+    // print('signUpCred is -> $signUpCred');
+    // print('uri is -> ${api_endpoint + 'Login/SignUp'}');
     http.Response response = await http.post(
         Uri.parse(api_endpoint + 'Login/SignUp'),
         body: jsonEncode(signUpCred),
         headers: {"Content-Type": "application/json"});
     if (response.statusCode == 200) {
       result = jsonDecode(response.body);
-      print(result);
+      // print(result);
       result.values.forEach((element) {
-        print(element.runtimeType);
+        // print(element.runtimeType);
       });
     } else {
       result = {'status': response.statusCode, 'HasError': true};

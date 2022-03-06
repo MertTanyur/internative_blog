@@ -12,6 +12,8 @@ import 'local_storage/storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/main_screen.dart';
 import 'state/nav_bar_controller.dart';
+import 'state/account_controller.dart';
+import 'splash_screen.dart';
 
 bool reDirectToMainPage = false;
 
@@ -47,6 +49,13 @@ Future<void> main() async {
                   userController: context.read<UserController>()),
             ),
             ChangeNotifierProvider(create: (context) => NavBarController()),
+            ChangeNotifierProxyProvider<AuthController, AccountController>(
+              update: (context, authController, accountController) =>
+                  accountController!..updateAuthController(authController),
+              create: (context) => AccountController(
+                authController: context.read<AuthController>(),
+              ),
+            ),
           ],
           child: const MyApp(),
         ),
@@ -125,11 +134,13 @@ class MyApp extends StatelessWidget {
             secondary: const Color(0xffC4C9D2),
             // secondary:
           )),
-      initialRoute: reDirectToMainPage ? MainScreen.id : Register.id,
+      initialRoute: SplashScreen.id,
+      //  reDirectToMainPage ? MainScreen.id : Register.id,
       routes: {
         Register.id: (_) => const Register(),
         Login.id: (_) => const Login(),
         MainScreen.id: (_) => const MainScreen(),
+        SplashScreen.id: (_) => const SplashScreen(),
       },
     );
   }

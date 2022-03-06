@@ -22,6 +22,11 @@ class AuthController extends ChangeNotifier {
 
   String? bearerToken;
 
+  void setBearerToken(String val) {
+    bearerToken = val;
+    notifyListeners();
+  }
+
   Future<Map> signIn() async {
     Map response = {};
     try {

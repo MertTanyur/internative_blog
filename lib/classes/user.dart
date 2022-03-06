@@ -9,6 +9,13 @@ class User {
 
   String? passwordRetry;
 
+  factory User.fromCredsMap(Map credsMap) {
+    return User(
+      mail: credsMap['mail'],
+      password: credsMap['password'],
+    );
+  }
+
   Map get signInCred => {'Email': mail?.trim(), 'Password': password?.trim()};
   Map get signUpCred => {
         'Email': mail?.trim(),

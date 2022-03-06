@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/widgets.dart';
+import 'package:internative_blog/screens/register.dart';
+import 'package:internative_blog/state/user_controller.dart';
 import 'package:internative_blog/widgets/blog_app_bar.dart';
 
+import '../classes/user.dart';
 import '../local_storage/storage.dart';
+import '../state/auth_controller.dart';
 import '../widgets/blog_nav_bar.dart';
 import '../state/nav_bar_controller.dart';
 import 'package:provider/provider.dart';
@@ -59,6 +63,11 @@ class _MainScreenState extends State<MainScreen> {
 
     // 'Article Detail',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
