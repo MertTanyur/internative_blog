@@ -32,6 +32,8 @@ dependencies:
   rive: ^0.8.1
   # text animation
   animated_text_kit: ^4.2.1
+  # for rendering html content
+  flutter_html: ^2.2.1
 
   image_picker: ^0.8.4+10
 

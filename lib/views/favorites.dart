@@ -37,6 +37,7 @@ class _FavoritesState extends State<Favorites> {
                               child: BlogItem(
                                   key: ValueKey(blogMap['Id']),
                                   size: size,
+                                  content: blogMap['Content'],
                                   imageUrl: blogMap['Image'],
                                   title: blogMap['Title']
                                       .replaceAll('Kategori', ''),

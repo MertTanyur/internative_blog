@@ -90,6 +90,7 @@ class _BlogsState extends State<Blogs> {
                         (Map blogMap) => AnimatedSwitcher(
                           duration: const Duration(milliseconds: 1200),
                           child: BlogItem(
+                              content: blogMap['Content'],
                               key: ValueKey(blogMap['Id']),
                               size: size,
                               imageUrl: blogMap['Image'],
