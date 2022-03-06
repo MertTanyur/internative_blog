@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:internative_blog/local_storage/storage.dart';
@@ -14,10 +15,14 @@ import 'screens/main_screen.dart';
 import 'state/nav_bar_controller.dart';
 import 'state/account_controller.dart';
 import 'splash_screen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 bool reDirectToMainPage = false;
 
 Future<void> main() async {
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
+  }
   WidgetsFlutterBinding.ensureInitialized();
 
   // storage service
@@ -56,6 +61,10 @@ Future<void> main() async {
                 authController: context.read<AuthController>(),
               ),
             ),
+            // StreamProvider(
+            //     create: ((context) =>
+            //         context.read<AccountController>().imageUploadStream),
+            //     initialData: null),
           ],
           child: const MyApp(),
         ),
@@ -100,6 +109,8 @@ class MyApp extends StatelessWidget {
                 .copyWith(color: const Color(0xff292F3B)),
             shadowColor: const Color(0xff000000).withOpacity(0.3),
           ),
+          bottomSheetTheme: BottomSheetThemeData(
+              modalBackgroundColor: const Color(0xff000000).withOpacity(0.4)),
           // scaffoldBackgroundColor: Colors.white,
           scaffoldBackgroundColor: const Color(0xffFAFAFA),
           textTheme: GoogleFonts.robotoTextTheme(

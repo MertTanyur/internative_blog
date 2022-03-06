@@ -34,8 +34,14 @@ dependencies:
   animated_text_kit: ^4.2.1
   # for rendering html content
   flutter_html: ^2.2.1
-
+  # for picking local images
   image_picker: ^0.8.4+10
+
+  # for maps
+  
+  google_maps_flutter: ^2.1.2
+  geolocator: ^8.2.0
+
 
 
 dev_dependencies:

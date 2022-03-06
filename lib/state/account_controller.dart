@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../state/auth_controller.dart';
 import '../services/account_service.dart';
@@ -24,7 +25,9 @@ class AccountController extends ChangeNotifier {
   String? image;
   String? longtitude;
   String? latitude;
-  File? imageFile;
+  XFile? imageFile;
+
+  Stream? imageUploadStream;
 
   Map? rawBlogs;
   List? rawBlogList;
@@ -58,8 +61,18 @@ class AccountController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setImageFile(File imageFile) {
-    imageFile = imageFile;
+  void setImageFile(XFile _imageFile) {
+    try {
+      imageFile = _imageFile;
+    } catch (e) {
+      print(e);
+    }
+
+    notifyListeners();
+  }
+
+  void removeImageFile() {
+    imageFile = null;
     notifyListeners();
   }
 
@@ -87,8 +100,9 @@ class AccountController extends ChangeNotifier {
       result = await accountService.accountGet(bearerToken!);
       if (!result['HasError']) {
         var ids = result['Data']['FavoriteBlogIds'] as List;
-
+        var url = result['Data']['Image'] as String;
         ids.forEach((element) => favoriteBlogs.add(element));
+        setImage(url);
       }
     } catch (e) {
       result['HasError'] = true;
@@ -109,15 +123,17 @@ class AccountController extends ChangeNotifier {
     return result;
   }
 
-  Future<Map> uploadImage() async {
-    Map result = {};
+  Future<void> uploadImage() async {
     try {
-      result = await accountService.uploadImage(bearerToken!, imageFile!);
+      Map response = await accountService.uploadImage(bearerToken!, imageFile!);
+      image = response['Data'];
+      notifyListeners();
     } catch (e) {
-      result['HasError'] = true;
-      result['error'] = e;
+      print(e);
     }
-    return result;
+    // imageUploadStream = result;
+    // notifyListeners();
+    // yield result;
   }
 
   // blog part
@@ -179,11 +195,11 @@ class AccountController extends ChangeNotifier {
   Future<void> getCategories() async {
     Map result = {};
     try {
-      print('get categories function is trigerred watch close! ');
+      // print('get categories function is trigerred watch close! ');
       result = await blogService.getCategories(bearerToken!);
       categories = result['Data'];
-      print('result data -> ${result["Data"]}');
-      print('categories -> $categories');
+      // print('result data -> ${result["Data"]}');
+      // print('categories -> $categories');
       notifyListeners();
     } catch (e) {
       result['HasError'] = true;

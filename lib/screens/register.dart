@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internative_blog/classes/user.dart';
+import 'package:internative_blog/splash_screen.dart';
 import 'package:internative_blog/state/auth_controller.dart';
 import 'package:provider/provider.dart';
 import '../state/user_controller.dart';
@@ -145,8 +146,8 @@ class _RegisterState extends State<Register> {
                         if (redirect) {
                           Future.delayed(
                               const Duration(milliseconds: 1300),
-                              () =>
-                                  Navigator.pushNamed(context, MainScreen.id));
+                              () => Navigator.pushNamed(
+                                  context, SplashScreen.id));
                         }
                       } else {
                         showSignError(context, 'Registration Status:',

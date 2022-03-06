@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
           if (result.containsKey('HasError') && !result['HasError']) {
             await context.read<AccountController>().accountGet();
             await context.read<AccountController>().getCategories();
-            Future.delayed(Duration(seconds: 2),
+            Future.delayed(Duration(seconds: 3),
                 () => Navigator.popAndPushNamed(context, MainScreen.id));
           } else {
             print(result['HasError']);
@@ -55,7 +55,8 @@ class _SplashScreenState extends State<SplashScreen> {
           }
         }
       } else {
-        Navigator.pushNamed(context, Register.id);
+        Future.delayed(Duration(seconds: 2),
+            () => Navigator.pushNamed(context, Register.id));
       }
     });
   }
