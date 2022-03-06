@@ -1,17 +1,9 @@
-# internative_blog
+# Assignment Report
 
-- There has to be 5 screens:
+## Broke or lacking features
+- configuration for IOS devices
+- even someone logs out, some of state management features persist until completely restart the app
+- bad documentation
+- expensive widgets and state management
 
-login
-register
-home
-  blog details
-favorites
-profile
-  image upload modal
-
-
-## Project Plan
-
-- 
 
